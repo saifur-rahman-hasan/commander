@@ -1,0 +1,31 @@
+import ApiController from "@/core/ApiController";
+import {NextApiRequest, NextApiResponse} from "next";
+import {ApiResponse} from "@/lib/ApiResponse";
+
+/**
+ * Route Resource Api Controller
+ */
+export default class ExampleController extends ApiController {
+
+	/**
+	 * Construct the controller
+	 *
+	 * @param request
+	 * @param response
+	 */
+	constructor(
+		request: NextApiRequest,
+		response: NextApiResponse
+	) {
+		super(request, response);
+	}
+
+	async myMethod() {
+		try {
+			let responseData = {}
+			return ApiResponse.success(this.response, responseData)
+		}catch (e) {
+			return ApiResponse.error(this.response, e)
+		}
+	}
+}

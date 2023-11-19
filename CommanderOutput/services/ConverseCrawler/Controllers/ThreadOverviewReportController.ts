@@ -1,0 +1,109 @@
+import {ApiController, ApiCrudController} from "@/core/ApiController";
+import {
+	TagCreateInputInterface,
+	TagOutputInterface,
+	TagUpdateInputInterface
+} from "@/services/Tag/Interfaces/TagInterface";
+import TagRepository from "@/services/Tag/Repositories/TagRepository";
+import {NextRequest, NextResponse} from "next/server";
+import ApiResponse from "@/core/ApiResponse";
+
+/**
+ * Route Resource Api Controller
+ */
+export default class ThreadOverviewReportController extends ApiController implements ApiCrudController {
+	private tagRepo: TagRepository;
+
+	/**
+	 * Construct the controller
+	 *
+	 * @param request
+	 * @param response
+	 */
+	constructor(
+		request: NextRequest,
+		response: NextResponse
+	) {
+		super(request, response);
+
+		this.tagRepo = new TagRepository()
+	}
+
+	/**
+	 * Get the list of Resources
+	 */
+	async index() {
+		try {
+			const tags: TagOutputInterface[] = await this.tagRepo.findAll()
+
+			return ApiResponse.success(tags)
+		}catch (e) {
+			return ApiResponse.error(e)
+		}
+	}
+
+	/**
+	 * Create a new Resource
+	 *
+	 */
+	async create() {
+		try {
+
+			const newTagData: TagCreateInputInterface = await this.getReqBody()
+
+			const newTag: TagCreateInputInterface = await this.tagRepo.create(newTagData)
+
+			return ApiResponse.success(newTag)
+		}catch (e) {
+			return ApiResponse.error(e)
+		}
+	}
+
+	/**
+	 * Show a specific resource info
+	 *
+	 */
+	async show(id: number) {
+		try {
+			const foundTag: TagCreateInputInterface = await this.tagRepo.findById(id)
+
+			return ApiResponse.success(foundTag)
+		}catch (e) {
+			return ApiResponse.error(e)
+		}
+	}
+
+	/**
+	 * Update a specific resource info
+	 *
+	 * @param id
+	 */
+	async update(
+		id: number,
+	) {
+		try {
+			const updatableTagData = await this.getReqBody()
+			const updatedTag: TagUpdateInputInterface = await this.tagRepo.update(id, updatableTagData)
+
+			return ApiResponse.success(updatedTag)
+		}catch (e) {
+			return ApiResponse.error(e)
+		}
+	}
+
+	/**
+	 * Delete a specific resource
+	 *
+	 * @param id
+	 */
+	async delete(id: number) {
+		try {
+			const deleted = await this.tagRepo.delete(id)
+
+			return ApiResponse.success(null, 'Your resource has been deleted.')
+		}catch (e: any) {
+			return ApiResponse.error(e, 'Failed to delete your resource')
+		}
+	}
+
+}

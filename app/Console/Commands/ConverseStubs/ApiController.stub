@@ -1,0 +1,13 @@
+import {NextApiRequest, NextApiResponse} from "next";
+
+export default class ApiController {
+    public request
+    public response
+    public requestData
+
+    constructor(req: NextApiRequest, res: NextApiResponse) {
+        this.request = req
+        this.response = res
+        this.requestData = req.body
+    }
+}

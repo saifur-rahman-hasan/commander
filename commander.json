@@ -1,0 +1,113 @@
+{
+    "services": [
+        {
+            "name": "Authentication",
+            "controllers": [
+                "AuthenticationController",
+                "AuthorizationController"
+            ],
+            "actions": [
+                "UserRegisterAction",
+                "UserLoginAction",
+                "UserLogoutAction",
+                "UserPasswordResetAction"
+            ],
+            "interfaces": [
+                "AuthenticationInterface",
+                "AuthorizationInterface"
+            ],
+            "repositories": [
+                "AuthenticationRepository",
+                "AuthorizationRepository",
+                "RoleRepository",
+                "PermissionRepository"
+            ]
+        }
+    ],
+    "threadMessages": [
+        {
+            "id": 1,
+            "messageType": "conversation_start",
+            "fromRole": "consumer",
+            "messageContent": "/start",
+            "createdAt": "2023-10-01 00:00:00"
+        },
+        {
+            "id": 2,
+            "messageType": "text",
+            "fromRole": "consumer",
+            "messageContent": "Hello",
+            "createdAt": "2023-10-01 00:00:05"
+        },
+        {
+            "id": 3,
+            "messageType": "text",
+            "fromRole": "consumer",
+            "messageContent": "I need Help",
+            "createdAt": "2023-10-01 00:00:08"
+        },
+        {
+            "id": 4,
+            "messageType": "channel_auto_reply",
+            "fromRole": "agent",
+            "messageContent": "Thanks. How can I help you?",
+            "createdAt": "2023-10-01 00:00:48"
+        },
+        {
+            "id": 4,
+            "messageType": "text",
+            "fromRole": "agent",
+            "messageContent": "Hi I am MR.X, How can I help you?",
+            "createdAt": "2023-10-01 00:00:48"
+        },
+        {
+            "id": 5,
+            "messageType": "text",
+            "fromRole": "agent",
+            "messageContent": "Are you with us?",
+            "createdAt": "2023-10-01 00:00:56"
+        },
+        {
+            "id": 6,
+            "messageType": "text",
+            "fromRole": "consumer",
+            "messageContent": "Yes I need to recharge my number",
+            "createdAt": "2023-10-01 00:02:36"
+        },
+        {
+            "id": 7,
+            "messageType": "text",
+            "fromRole": "agent",
+            "messageContent": "Provide Your number",
+            "createdAt": "2023-10-01 00:03:26"
+        },
+        {
+            "id": 7,
+            "messageType": "text",
+            "fromRole": "consumer",
+            "messageContent": "+88225458742",
+            "createdAt": "2023-10-01 00:04:20"
+        },
+        {
+            "id": 8,
+            "messageType": "iceFeedback",
+            "fromRole": "agent",
+            "messageContent": "Rate your experience with agent.",
+            "createdAt": "2023-10-01 00:05:27"
+        },
+        {
+            "id": 8,
+            "messageType": "iceFeedbackReply",
+            "fromRole": "consumer",
+            "messageContent": "Y",
+            "createdAt": "2023-10-01 00:05:27"
+        },
+        {
+            "id": 9,
+            "messageType": "conversation_stop",
+            "fromRole": "consumer",
+            "messageContent": "/stop",
+            "createdAt": "2023-10-01 00:05:27"
+        }
+    ]
+}
