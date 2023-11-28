@@ -1,9 +1,12 @@
 <?php
 
-$commanderOutputPath = "ConverseCommanderOutput";
+$commanderInputPath = "CommanderInput";
+$commanderOutputPath = "CommanderOutput";
+$commanderInputStbFilesPath = "CommanderInput/stubFiles";
 
 return [
-    'stub_files_path' => app_path('Console/Commands/ConverseStubs'),
+    'stub_files_path' => base_path($commanderInputStbFilesPath),
+    'commander_input_path' => base_path($commanderInputPath),
     'commander_output_path' => base_path($commanderOutputPath),
     'core_path' => base_path("$commanderOutputPath/core"),
     'service_path' => base_path("$commanderOutputPath/services"),

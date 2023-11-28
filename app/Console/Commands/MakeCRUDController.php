@@ -5,41 +5,27 @@ namespace App\Console\Commands;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\File;
 
-class MakeRepository extends Command
+class MakeCRUDController extends Command
 {
-    /**
-     * The name and signature of the console command.
-     *
-     * @var string
-     */
-    protected $signature = 'commander:make-repository  {repository?} {--service=}';
+    protected $signature = 'commander:make-crud-controller {controller?} {--service=}';
 
-    /**
-     * The console command description.
-     *
-     * @var string
-     */
-    protected $description = 'Create new Repository class';
+    protected $description = 'Create a CRUD Controller';
 
-    /**
-     * Execute the console command.
-     * @throws \Exception
-     */
     public function handle()
     {
         $serviceName = $this->option('service');
-        $repositoryName = $this->argument('repository');
+        $controllerName = $this->argument('controller');
 
         if (!$serviceName) {
             $serviceName = $this->askForServiceName();
         }
 
-        if (!$repositoryName) {
-            $repositoryName = $this->askForRepositoryName($serviceName);
+        if (!$controllerName) {
+            $controllerName = $this->askForControllerName($serviceName);
         }
 
         $servicesRootDir = config('commander.service_path');
-        $stubFilePath = config('commander.stub_files_path') . '/ExampleRepository.stub';
+        $stubFilePath = config('commander.stub_files_path') . '/ExampleCRUDController.stub';
 
         if (!File::isFile($stubFilePath)) {
             $this->error("The stub file '{$stubFilePath}' does not exist.");
@@ -48,46 +34,45 @@ class MakeRepository extends Command
 
 
         $servicePath = $servicesRootDir . '/' . $serviceName;
-        $repositoryPath = $servicePath . "/Repositories";
-        $repositoryFilePath = "${repositoryPath}/${repositoryName}.ts";
+        $controllerPath = $servicePath . "/Controllers";
+        $controllerFilePath = "${controllerPath}/${controllerName}.ts";
 
         if (!File::isDirectory($servicePath)) {
             $this->askForServiceCreationIfNotExists($servicePath);
         }
 
-        if (!File::isDirectory($repositoryPath)) {
-            File::makeDirectory($repositoryPath, 0755, true);
+        if (!File::isDirectory($controllerPath)) {
+            File::makeDirectory($controllerPath, 0755, true);
         }
 
 
-        if (File::exists($repositoryFilePath)) {
-            $this->error("The file '{$repositoryFilePath}' already exists. Please choose a different name.");
+        if (File::exists($controllerFilePath)) {
+            $this->error("The file '{$controllerFilePath}' already exists. Please choose a different name.");
         } else {
             // Copy the stub file to the service directory
-            File::copy($stubFilePath, $repositoryFilePath);
+            File::copy($stubFilePath, $controllerFilePath);
 
-            $this->replaceRepositoryPlaceholders(
-                $repositoryFilePath,
-                $repositoryName
+            $this->replaceControllerPlaceholders(
+                $controllerFilePath,
+                $controllerName
             );
 
-            $this->info('Your repository has been created.');
-            $this->line($repositoryFilePath);
+            $this->info('Your controller has been created.');
+            $this->line($controllerFilePath);
             $this->newLine(1);
 
         }
-
+        return 0;
     }
 
-    private function replaceRepositoryPlaceholders(
+    private function replaceControllerPlaceholders(
         string $filePath,
-        string $repositoryName
-    ): void
-    {
+        string $controllerName
+    ): void {
         $content = File::get($filePath);
 
         // Replace placeholders with actual class names
-        $content = str_replace('ExampleRepository', $repositoryName, $content);
+        $content = str_replace('ExampleCRUDController', $controllerName, $content);
 
         // Save the modified content back to the file
         File::put($filePath, $content);
@@ -109,19 +94,19 @@ class MakeRepository extends Command
         );
     }
 
-    private function askForRepositoryName($serviceName)
+    private function askForControllerName($serviceName)
     {
         return $this->anticipate(
-            'Enter the repository name',
-            $this->getRepositoryNameSuggestions($serviceName)
+            'Enter the controller name',
+            $this->getControllerNameSuggestions($serviceName)
         );
     }
 
-    private function getRepositoryNameSuggestions($serviceName): array
+    private function getControllerNameSuggestions($serviceName): array
     {
         return collect([$serviceName])
             ->map(function ($name) {
-                return "${name}Repository";
+                return "${name}Controller";
             })->toArray();
     }
 
@@ -133,7 +118,7 @@ class MakeRepository extends Command
         );
 
         if (!$createService) {
-            $this->info('repository creation canceled.');
+            $this->info('Controller creation canceled.');
             return;
         }
 
