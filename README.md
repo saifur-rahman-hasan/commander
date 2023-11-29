@@ -13,10 +13,10 @@ Commander Helps developers to generate nextjs code to increase the development p
 
 It is only for developers to use
 
-- [How to Install Commander](https://github.com/saifur-rahman-hasan/commander/blob/main/README.md#installing-commander).
-- [Explore the Commander Commands](https://github.com/saifur-rahman-hasan/commander/blob/main/README.md#commander-commands).
-- [Understand the Architecture](https://github.com/saifur-rahman-hasan/commander/blob/main/README.md#Architecture).
-- [Contributors](https://github.com/saifur-rahman-hasan/commander/blob/main/README.md#contributors).
+- [How to Install Commander](https://github.com/saifur-rahman-hasan/commander#installing-commander).
+- [Explore the Commander Commands](https://github.com/saifur-rahman-hasan/commander#commander-commands).
+- [Understand the Architecture](https://github.com/saifur-rahman-hasan/commander#Architecture).
+- [Contributors](https://github.com/saifur-rahman-hasan/commander#contributors).
 
 
 ## Installing Commander
