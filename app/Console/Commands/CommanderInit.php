@@ -19,7 +19,7 @@ class CommanderInit extends Command
      *
      * @var string
      */
-    protected $description = 'Command description';
+    protected $description = 'Initialize the Commander';
 
     /**
      * Execute the console command.
@@ -29,7 +29,7 @@ class CommanderInit extends Command
         $this->info('Initializing Commander...');
 
         // Check if the core directory exists
-        $coreDirectory = base_path('CommanderOutput/core');
+        $coreDirectory = config('commander.commander_output_path') . '/core';
 
         if (!File::exists($coreDirectory)) {
             // If not, create it
@@ -41,7 +41,9 @@ class CommanderInit extends Command
 
 
         // Copy and rename stub files from app/Console/Commands/stubs/core directory
-        $stubDirectory = app_path('Console/Commands/stubs/core');
+        $stubDirectory = config('commander.core_path');
+        $outputPath = config('commander.commander_output_path') . '/core';
+
         if (File::isDirectory($stubDirectory)) {
             // Get all files in the stub directory
             $files = File::allFiles($stubDirectory);
@@ -54,8 +56,10 @@ class CommanderInit extends Command
                 $newFileName = $fileNameWithoutExtension . '.ts';
 
                 // Copy the file to the core directory with the new name
-                File::copy($file->getRealPath(), base_path("core/$newFileName"));
-                $this->info("Copied and renamed: $newFileName");
+                $outputFilePath = $outputPath . "/" . $newFileName;
+
+                File::copy($file->getRealPath(), $outputFilePath);
+                $this->info("Copied and renamed: $outputFilePath");
             }
         } else {
             $this->error('Stub directory not found: ' . $stubDirectory);

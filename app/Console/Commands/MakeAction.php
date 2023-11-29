@@ -19,7 +19,7 @@ class MakeAction extends Command
      *
      * @var string
      */
-    protected $description = 'Command description';
+    protected $description = 'Create a Service Action class';
 
     /**
      * Execute the console command.

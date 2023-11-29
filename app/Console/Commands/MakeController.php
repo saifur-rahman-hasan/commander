@@ -9,7 +9,7 @@ class MakeController extends Command
 {
     protected $signature = 'commander:make-controller {controller?} {--service=}';
 
-    protected $description = 'Command description';
+    protected $description = 'Make a service controller';
 
     public function handle()
     {

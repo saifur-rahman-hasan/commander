@@ -20,7 +20,7 @@ class MakeApiRoute extends Command implements PromptsForMissingInput
      *
      * @var string
      */
-    protected $description = 'Command description';
+    protected $description = 'Create a next js api route with next 13 app directory support';
 
 
     /**
@@ -41,14 +41,15 @@ class MakeApiRoute extends Command implements PromptsForMissingInput
     public function handle()
     {
         $routeName = $this->argument('name');
-        $apiRoutePath = $servicesRootDir = config('commander.api_path'). "/$routeName";
-        $crudApiStubFilePath = config('commander.stub_files_path') . '/api';
+        $templateName = $this->ask('template', 'example_crud_api');
+        $apiOutputPath = config('commander.api_output_path'). "/$routeName";
+        $apiInputPath = config('commander.api_input_path') . '/' . $templateName;
 
         // Create the service directory if it doesn't exist
-        $this->createDirectory($apiRoutePath);
+        $this->createDirectory($apiOutputPath);
 
         // TODO: Copy everything from the $crudApiStubFilePath directory to $apiRoutePath
-        $this->copyAndChangeExtension($crudApiStubFilePath, $apiRoutePath);
+        $this->copyAndChangeExtension($apiInputPath, $apiOutputPath);
     }
 
     private function createDirectory(string $directoryPath): void

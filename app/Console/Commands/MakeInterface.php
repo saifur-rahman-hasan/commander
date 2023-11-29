@@ -5,41 +5,27 @@ namespace App\Console\Commands;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\File;
 
-class MakeRepository extends Command
+class MakeInterface extends Command
 {
-    /**
-     * The name and signature of the console command.
-     *
-     * @var string
-     */
-    protected $signature = 'commander:make-repository  {repository?} {--service=}';
+    protected $signature = 'commander:make-interface {interface?} {--service=}';
 
-    /**
-     * The console command description.
-     *
-     * @var string
-     */
-    protected $description = 'Make Service Repository class';
+    protected $description = 'Make service interface';
 
-    /**
-     * Execute the console command.
-     * @throws \Exception
-     */
     public function handle()
     {
         $serviceName = $this->option('service');
-        $repositoryName = $this->argument('repository');
+        $interfaceName = $this->argument('interface');
 
         if (!$serviceName) {
             $serviceName = $this->askForServiceName();
         }
 
-        if (!$repositoryName) {
-            $repositoryName = $this->askForRepositoryName($serviceName);
+        if (!$interfaceName) {
+            $interfaceName = $this->askForInterfaceName($serviceName);
         }
 
         $servicesRootDir = config('commander.service_path');
-        $stubFilePath = config('commander.stub_files_path') . '/ExampleRepository.stub';
+        $stubFilePath = config('commander.stub_files_path') . '/ExampleInterface.stub';
 
         if (!File::isFile($stubFilePath)) {
             $this->error("The stub file '{$stubFilePath}' does not exist.");
@@ -48,46 +34,45 @@ class MakeRepository extends Command
 
 
         $servicePath = $servicesRootDir . '/' . $serviceName;
-        $repositoryPath = $servicePath . "/Repositories";
-        $repositoryFilePath = "${repositoryPath}/${repositoryName}.ts";
+        $interfacePath = $servicePath . "/Interfaces";
+        $interfaceFilePath = "${interfacePath}/${interfaceName}.ts";
 
         if (!File::isDirectory($servicePath)) {
             $this->askForServiceCreationIfNotExists($servicePath);
         }
 
-        if (!File::isDirectory($repositoryPath)) {
-            File::makeDirectory($repositoryPath, 0755, true);
+        if (!File::isDirectory($interfaceFilePath)) {
+            File::makeDirectory($interfaceFilePath, 0755, true);
         }
 
 
-        if (File::exists($repositoryFilePath)) {
-            $this->error("The file '{$repositoryFilePath}' already exists. Please choose a different name.");
+        if (File::exists($interfaceFilePath)) {
+            $this->error("The file '{$interfaceFilePath}' already exists. Please choose a different name.");
         } else {
             // Copy the stub file to the service directory
-            File::copy($stubFilePath, $repositoryFilePath);
+            File::copy($stubFilePath, $interfaceFilePath);
 
-            $this->replaceRepositoryPlaceholders(
-                $repositoryFilePath,
-                $repositoryName
+            $this->replaceInterfacePlaceholders(
+                $interfaceFilePath,
+                $interfaceName
             );
 
-            $this->info('Your repository has been created.');
-            $this->line($repositoryFilePath);
+            $this->info('Your interface has been created.');
+            $this->line($interfaceFilePath);
             $this->newLine(1);
 
         }
-
+        return 0;
     }
 
-    private function replaceRepositoryPlaceholders(
+    private function replaceInterfacePlaceholders(
         string $filePath,
-        string $repositoryName
-    ): void
-    {
+        string $interfaceName
+    ): void {
         $content = File::get($filePath);
 
         // Replace placeholders with actual class names
-        $content = str_replace('ExampleRepository', $repositoryName, $content);
+        $content = str_replace('ExampleInterface', $interfaceName, $content);
 
         // Save the modified content back to the file
         File::put($filePath, $content);
@@ -109,19 +94,19 @@ class MakeRepository extends Command
         );
     }
 
-    private function askForRepositoryName($serviceName)
+    private function askForInterfaceName($serviceName)
     {
         return $this->anticipate(
-            'Enter the repository name',
-            $this->getRepositoryNameSuggestions($serviceName)
+            'Enter the interface name',
+            $this->getInterfaceNameSuggestions($serviceName)
         );
     }
 
-    private function getRepositoryNameSuggestions($serviceName): array
+    private function getInterfaceNameSuggestions($serviceName): array
     {
         return collect([$serviceName])
             ->map(function ($name) {
-                return "${name}Repository";
+                return "${name}Interface";
             })->toArray();
     }
 
@@ -133,7 +118,7 @@ class MakeRepository extends Command
         );
 
         if (!$createService) {
-            $this->info('repository creation canceled.');
+            $this->info('Interface creation canceled.');
             return;
         }
 
